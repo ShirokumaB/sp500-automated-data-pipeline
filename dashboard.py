@@ -275,85 +275,78 @@ elif page == "About Project":
     st.title("📂 About this Project")
     
     st.markdown("""
-    ### 🎯 Objective
-    This interactive dashboard serves as a **professional portfolio demonstration** of a full-stack Data Engineering pipeline. 
-    It is not just a trading tool, but a **Data Validation & Analytics Platform** designed to:
+    ## Project Overview
     
-    1.  **Automate Data Ingestion:** Systematically fetch daily financial data (S&P 500) from reliable sources.
-    2.  **Verify Data Integrity:** Ensure no missing values or anomalies exist before analysis.
-    3.  **Demonstrate Algorithmic Logic:** Visualize how simple quantitative strategies (like SMA Crossover) process this data in real-time.
+    This project is a **Data Engineering Pipeline** that automates the collection and analysis of S&P 500 stock market data.
     
-    ---
+    **What it does:**
+    - Fetches daily market data automatically from Yahoo Finance
+    - Cleans and validates the data for quality assurance
+    - Stores data in PostgreSQL (production) or CSV (demo mode)
+    - Provides an interactive dashboard for backtesting trading strategies
+    
+    **Why it matters:**
+    - Demonstrates end-to-end data pipeline skills
+    - Shows proficiency in Python, SQL, and data visualization
+    - Includes a practical application (SMA Crossover Strategy backtesting)
     """)
 
-    st.subheader("⚙️ System Architecture")
-    st.caption("How data flows from the source to this dashboard:")
+    st.markdown("---")
+    st.subheader("🏗 System Architecture")
     
-    # Simple mermaid diagram for flow
     st.markdown("""
     ```mermaid
     graph LR
         A[Yahoo Finance API] -->|Extract| B(Python ETL Script)
-        B -->|Transform & Clean| C{Quality Checks}
-        C -->|Pass| D[(PostgreSQL / CSV)]
-        D -->|Serve| E[Streamlit Dashboard]
-        E -->|Analyze| F[User Insights]
+        B -->|Clean & Validate| C[(PostgreSQL Database)]
+        C -->|Query| D[Streamlit Dashboard]
+        C -.->|Export| E(CSV Backup)
+        E -.->|Fallback| D
     ```
     """)
+    st.caption("The dashboard supports both live database queries and CSV fallback for cloud deployment.")
+
+    st.markdown("---")
     
     col1, col2 = st.columns(2)
     with col1:
-        st.info("""
-        **🛠 Tech Stack**
-        *   **Python:** Core logic & data processing.
-        *   **Pandas:** Advanced data manipulation.
-        *   **Streamlit:** Interactive frontend UI.
-        *   **PostgreSQL:** Secure data warehousing (Live Mode).
-        *   **GitHub Actions / Prefect:** Automated orchestration.
+        st.subheader("🛠 Tech Stack")
+        st.markdown("""
+        - **Python** - Core programming language
+        - **Pandas** - Data manipulation
+        - **Streamlit** - Web dashboard
+        - **PostgreSQL** - Data storage
+        - **Prefect** - Workflow orchestration
+        - **VectorBT** - Backtesting engine
         """)
         
     with col2:
-        st.success("""
-        **🌟 Key Features**
-        *   **Dynamic Backtesting:** Test strategies on the fly with custom parameters.
-        *   **Investment Simulation:** Calculate real-dollar growth scenarios (e.g., $100k Investment).
-        *   **Hybrid Availability:** Runs on Cloud Database or Static CSV (Demo Mode) for 100% uptime.
+        st.subheader("📊 Key Features")
+        st.markdown("""
+        - **Automated Data Pipeline** - Scheduled daily updates
+        - **Data Quality Checks** - Missing value detection
+        - **Interactive Backtesting** - Test strategies with custom parameters
+        - **Investment Simulation** - Calculate hypothetical returns
+        - **Dual-Mode Deployment** - Works with or without database
         """)
 
     st.markdown("---")
-    st.subheader("🟢 System Status Monitor")
+    st.subheader("🟢 System Status")
     
-    # Check Status
     close, source = get_close_data()
     
-    status_col1, status_col2 = st.columns(2)
-    with status_col1:
+    col1, col2 = st.columns(2)
+    with col1:
         if "CSV" in source:
-            st.warning(f"**Data Source Mode**\n\n📁 **Static Demo (CSV)**\n\n*Optimized for fast public deployment.*")
+            st.info(f"**Data Source:** CSV (Demo Mode)")
         elif "PostgreSQL" in source:
-            st.success(f"**Data Source Mode**\n\n🟢 **Live Database**\n\n*Connected to production warehouse.*")
+            st.success(f"**Data Source:** PostgreSQL (Live)")
         else:
-             st.error("**Data Source Mode**\n\n🔴 **Disconnected**")
+            st.error("**Data Source:** Disconnected")
 
-    with status_col2:
+    with col2:
         if not close.empty:
-            st.success(f"**Latest Data Available**\n\n📅 **{close.index.max().date()}**\n\n*Data is up-to-date.*")
+            st.success(f"**Latest Data:** {close.index.max().date()}")
         else:
-            st.error("No data available.")
+            st.warning("**Latest Data:** No data available")
 
-    st.caption("Developed by [Your Name/Portfolio] | Powered by Python Streamlit")
-
-    st.markdown("---")
-    st.subheader("🏗 System Architecture")
-    st.markdown("""
-    ```mermaid
-    graph LR
-        A[Yahoo Finance API] -->|Extract| B(Prefect Orchestrator)
-        B -->|Transform| C{Data Cleaning}
-        C -->|Load| D[(PostgreSQL)]
-        D -.->|Export| E(CSV Snapshot)
-        E -->|Read| F[Streamlit Dashboard]
-        D -.->|Direct Query| F
-    ```
-    """)
-    st.caption("*The dashboard supports both Direct DB Query (Live) and CSV Snapshot (Demo/Cloud) modes.*")

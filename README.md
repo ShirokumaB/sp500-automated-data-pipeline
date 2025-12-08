@@ -4,119 +4,89 @@
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sp500-automated-data-pipeline-hljdpfnxtokhtwerudtkpp.streamlit.app/)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-**🔴 LIVE DEMO:** [Click here to view the Interactive Dashboard](https://sp500-automated-data-pipeline-hljdpfnxtokhtwerudtkpp.streamlit.app/)
+**[🔴 LIVE DEMO](https://sp500-automated-data-pipeline-hljdpfnxtokhtwerudtkpp.streamlit.app/)** - Click to view the interactive dashboard
 
-This project is a **Full-Stack Data Engineering Solution** designed to automate the lifecycle of financial data for the S&P 500 Index. It demonstrates a robust pipeline that fetches, cleans, validates, and visualizes market data using a modern tech stack.
+## Overview
 
-An automated data engineering pipeline that fetches **S&P 500 Index (^GSPC)** data daily, processes technical indicators, stores them in a database, and visualizes trading strategy performance via an interactive dashboard.
+A Data Engineering pipeline that automates the collection, processing, and visualization of S&P 500 stock market data. The project demonstrates end-to-end data engineering skills including ETL processes, database management, and interactive dashboards.
 
-## 📺 Demo & Validation
-
-This project includes a **Streamlit Dashboard** (`dashboard.py`) that serves as a live document and validation tool.
-*   **Live Data View:** Visualizes the latest data fetched by the pipeline.
-*   **Strategy Check:** Runs a basic SMA Crossover backtest to prove data integrity and usability.
-*   **Project Documentation:** Contains an in-app "About" page explaining the architecture.
-
-*(Screenshot or GIF of the dashboard would go here)*
-
-## 🚀 Features
-
-*   **Automated ETL Pipeline:** Orchestrated by **Prefect** to fetch data daily.
-*   **S&P 500 Index Data:** Specifically targets the `^GSPC` ticker.
-*   **Data Processing:** Cleans raw data and calculates Moving Averages (MA 20, 50, 100, 200).
-*   **Database Integration:** specific storage in **PostgreSQL**.
-*   **Interactive Dashboard:** Built with **Streamlit** to visualize stock prices and backtest strategies.
-*   **Backtesting Engine:** Uses **VectorBT** to simulate SMA Crossover strategies.
+**Key Capabilities:**
+- Automated daily data fetching from Yahoo Finance
+- Data cleaning and technical indicator calculation (Moving Averages)
+- PostgreSQL storage with CSV fallback for cloud deployment
+- Interactive backtesting dashboard with investment simulation
 
 ## 🛠 Tech Stack
 
-*   **Orchestration:** Prefect
-*   **Data Source:** Yahoo Finance (`yfinance`)
-*   **Database:** PostgreSQL
-*   **Visualization:** Streamlit, Matplotlib
-*   **Analysis:** Pandas, NumPy, VectorBT
+| Category | Technologies |
+|----------|-------------|
+| **Data Pipeline** | Python, Pandas, Prefect |
+| **Data Source** | Yahoo Finance API |
+| **Database** | PostgreSQL |
+| **Visualization** | Streamlit |
+| **Backtesting** | VectorBT |
 
 ## 📂 Project Structure
 
 ```
-├── sp500_pipeline.py    # Main ETL logic (Extract -> Transform -> Load)
-├── deploy_pipeline.py   # Prefect deployment and scheduling configuration
-├── dashboard.py         # Streamlit application for visualization using data from DB
-├── notebooks/           # Jupyter notebooks for research and backtest experiments
-└── .env.example        # Template for environment variables
+├── sp500_pipeline.py    # Main ETL pipeline (Extract → Transform → Load)
+├── dashboard.py         # Streamlit web application
+├── deploy_pipeline.py   # Prefect scheduling configuration
+├── requirements.txt     # Python dependencies
+└── sp500_market_data.csv # Cached data for demo mode
 ```
 
-## ☁️ Deployment (How to Share)
-
-To verify this project publicly, you can deploy it for free using **Streamlit Community Cloud**:
-
-1.  Push this code to a **GitHub Repository**.
-2.  Go to [share.streamlit.io](https://share.streamlit.io/).
-3.  Connect your GitHub and select this repository.
-4.  **Important:** In the "Advanced Settings" of the deployment, you must add your Database credentials as **Secrets** (matching content in `.env`).
-    *   *Note: Since this project uses a local PostgreSQL, for a public demo, you would typically migrate the DB to a cloud provider (e.g., Supabase, Neon) or use an SQLite file for simplicity in demos.*
-
-## ⚡ Getting Started (Local)
+## 🚀 Getting Started
 
 ### Prerequisites
-
-*   Python 3.9+
-*   PostgreSQL Database
-*   Prefect Account (optional for cloud, required for some features)
+- Python 3.9+
+- PostgreSQL (optional - CSV mode available)
 
 ### Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/sp500-pipeline.git
-    cd sp500-pipeline
-    ```
+```bash
+# Clone the repository
+git clone https://github.com/ShirokumaB/sp500-automated-data-pipeline.git
+cd sp500-automated-data-pipeline
 
-2.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Note: If `requirements.txt` is missing, you'll need `prefect`, `pandas`, `yfinance`, `sqlalchemy`, `psycopg2-binary`, `streamlit`, `vectorbt`, `python-dotenv`)*
+# Install dependencies
+pip install -r requirements.txt
 
-3.  Set up Environment Variables:
-    Create a `.env` file in the root directory:
-    ```env
-    DB_USER=your_user
-    DB_PASSWORD=your_password
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_NAME=your_db_name
-    ```
+# Set up environment variables (copy and edit)
+cp .env.example .env
+```
 
 ### Usage
 
-**1. Run the Pipeline Manually:**
 ```bash
+# Run the data pipeline
 python sp500_pipeline.py
-```
 
-**2. Deploy the Pipeline (Schedule):**
-```bash
-python deploy_pipeline.py
-```
-
-**3. Launch the Dashboard:**
-```bash
+# Launch the dashboard
 streamlit run dashboard.py
 ```
 
-## 📊 Dashboard Preview
+## 📊 Dashboard Features
 
-The dashboard allows you to:
-*   Select a stock ticker (currently focused on S&P 500).
-*   Choose a strategy (e.g., SMA Crossover).
-*   Adjust parameters (Short/Long windows).
-*   View performance metrics (Sharpe Ratio, Max Drawdown, Total Return).
+- **Market Trend Visualization** - Historical price data with SMA indicators
+- **Strategy Backtesting** - Test SMA Crossover strategy with custom parameters
+- **Investment Simulation** - Calculate hypothetical returns on $100,000 investment
+- **Performance Metrics** - Total Return, Win Rate, Max Drawdown
+
+## 🏗 Architecture
+
+```mermaid
+graph LR
+    A[Yahoo Finance] -->|Extract| B(Python ETL)
+    B -->|Transform| C[(PostgreSQL)]
+    C -->|Query| D[Streamlit Dashboard]
+    C -.->|Export| E(CSV Backup)
+    E -.->|Fallback| D
+```
 
 ## 🔮 Future Improvements
 
-*   [ ] Containerize with Docker & Docker Compose.
-*   [ ] Deploy database to Cloud (AWS RDS/GCP SQL).
-*   [ ] Add email/Slack notifications for buy/sell signals.
-*   [ ] Implement data quality tests (Great Expectations).
-
+- [ ] Docker containerization
+- [ ] Cloud database migration (AWS RDS)
+- [ ] Additional trading strategies
+- [ ] Real-time data streaming

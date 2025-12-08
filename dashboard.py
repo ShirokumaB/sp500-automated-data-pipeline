@@ -342,7 +342,6 @@ elif page == "About Project":
             st.error("No data available.")
 
     st.caption("Developed by [Your Name/Portfolio] | Powered by Python Streamlit")
-            st.warning("**Latest Data Available**\n\nUnknown")
 
     st.markdown("---")
     st.subheader("🏗 System Architecture")

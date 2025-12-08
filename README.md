@@ -1,8 +1,10 @@
 # S&P 500 Index (^GSPC) Automated Data Pipeline
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-ff4b4b)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sp500-automated-data-pipeline-hljdpfnxtokhtwerudtkpp.streamlit.app/)
 ![Status](https://img.shields.io/badge/Status-Active-success)
+
+**🔴 LIVE DEMO:** [Click here to view the Interactive Dashboard](https://sp500-automated-data-pipeline-hljdpfnxtokhtwerudtkpp.streamlit.app/)
 
 This project is a **Full-Stack Data Engineering Solution** designed to automate the lifecycle of financial data for the S&P 500 Index. It demonstrates a robust pipeline that fetches, cleans, validates, and visualizes market data using a modern tech stack.
 

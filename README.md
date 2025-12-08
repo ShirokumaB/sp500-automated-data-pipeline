@@ -118,5 +118,3 @@ The dashboard allows you to:
 *   [ ] Add email/Slack notifications for buy/sell signals.
 *   [ ] Implement data quality tests (Great Expectations).
 
----
-*Created by [Your Name]*
